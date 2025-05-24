@@ -1,6 +1,9 @@
-package Strategies.ArertStrategy;
+package backend.stockstracker.ArertStrategy;
+
+import backend.stockstracker.Models.Alert;
+import backend.stockstracker.Models.Stock;
 
 public interface AlertStrategy {
 
-    public void alert();
+    public Alert triggerAlert(Alert alert);
 }

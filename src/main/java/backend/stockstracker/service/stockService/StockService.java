@@ -1,8 +1,9 @@
-package backend.stockstracker.stockService;
+package backend.stockstracker.service.stockService;
 
 
 import backend.stockstracker.Models.Stock;
 import backend.stockstracker.Models.WatchList;
+import backend.stockstracker.Repository.StockRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,11 +17,11 @@ import java.util.Map;
 public class StockService {
 
     public final RestTemplate restTemplate;
+    private StockRepository stockRepository;
 
-
-
-    public StockService(RestTemplate restTemplate) {
+    public StockService(RestTemplate restTemplate, StockRepository stockRepository) {
         this.restTemplate = restTemplate;
+        this.stockRepository = stockRepository;
     }
 
     public Stock getStockBySymbol(String symbol) {
@@ -51,48 +52,74 @@ public class StockService {
         stock.setLowOftheDay(Double.valueOf(responseBody.get("l").toString()));
         stock.setPreviousDayClosePrice(Double.valueOf(responseBody.get("pc").toString())); // 'pc' correct hai close price ke liye
 
+        stockRepository.save(stock);
+
         return stock;
 
-//        String apiKey = "d06h0a9r01qg26s7t9v0d06h0a9r01qg26s7t9vg";
-//        String url = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiKey;
-//
-//        HttpHeaders headers = new HttpHeaders();
-//
-//        headers.set("user-agent", "Mozilla/5.0");
-//
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//
-//        ResponseEntity<Map> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                entity,
-//                Map.class
-//        );
-//
-//        Map<String, Object> responseBody = response.getBody();
-//
-//        Stock stock = new Stock();
-//
-//        // c = current price
-//        // h = high of the day
-//        // l = low of the day
-//        // o = open of the day
-//        // cp = close of previous day
-//
-//        stock.setSymbol(symbol);
-//        stock.setCurrentPrice(Double.valueOf(responseBody.get("c").toString()));
-//        stock.setOperPriceOfTheDay(Double.valueOf(responseBody.get("o").toString()));
-//        stock.setHighOftheDay(Double.valueOf(responseBody.get("h").toString()));
-//        stock.setLowOftheDay(Double.valueOf(responseBody.get("l").toString()));
-//        stock.setPreviousDayClosePrice(Double.valueOf(responseBody.get("pc").toString()));
-//
-//        return stock;
     }
+
+
+    //add new stock to database
+    public Stock addStock(String symbol, double currentPrice, double operPriceOfTheDay, double highOftheDay, double lowOftheDay, double previousDayClosePrice) {
+
+        Stock stock = stockRepository.findBySymbol(symbol);
+
+        if (stock == null) {
+            System.out.println("Stock not found");
+            return null;
+        }
+
+        Stock newStock = new Stock();
+        newStock.setSymbol(symbol);
+        newStock.setCurrentPrice(currentPrice);
+        newStock.setOperPriceOfTheDay(operPriceOfTheDay);
+        newStock.setHighOftheDay(highOftheDay);
+        newStock.setLowOftheDay(lowOftheDay);
+        newStock.setPreviousDayClosePrice(previousDayClosePrice);
+
+        stockRepository.save(newStock);
+
+        return  newStock;
+    }
+
+
+    // update an existing stock and add instead if not found in database
+    public Stock updateStock(String symbol, double currentPrice, double operPriceOfTheDay, double highOftheDay, double lowOftheDay, double previousDayClosePrice) {
+
+        Stock stock = stockRepository.findBySymbol(symbol);
+
+        if (stock == null) {
+            addStock(symbol, currentPrice, operPriceOfTheDay, highOftheDay, lowOftheDay, previousDayClosePrice);
+        }
+
+        stockRepository.deleteById(stock.getId());
+
+        Stock newStock = new Stock();
+        newStock.setSymbol(symbol);
+        newStock.setCurrentPrice(currentPrice);
+        newStock.setOperPriceOfTheDay(operPriceOfTheDay);
+        newStock.setHighOftheDay(highOftheDay);
+        newStock.setLowOftheDay(lowOftheDay);
+        newStock.setPreviousDayClosePrice(previousDayClosePrice);
+        stockRepository.save(newStock);
+
+        return newStock;
+    }
+
+
+    // remove a stock by symbol
+    public Stock deleteStock(String symbol) {
+        Stock stock = stockRepository.findBySymbol(symbol);
+        if (stock == null) {
+            return null;
+        }
+
+        stockRepository.delete(stock);
+        return stock;
+    }
+
 
     public WatchList addStockToWatchList(Stock stock){
         return null;
     }
 }
-//{
-//        "symbol": "asdfj"
-//        }

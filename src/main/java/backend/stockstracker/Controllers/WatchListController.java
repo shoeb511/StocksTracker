@@ -1,4 +1,4 @@
-package Controllers;
+package backend.stockstracker.Controllers;
 
 public class WatchListController {
 }

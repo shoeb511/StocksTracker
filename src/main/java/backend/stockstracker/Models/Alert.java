@@ -1,28 +1,47 @@
-package Models;
+package backend.stockstracker.Models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
-import java.util.Date;
 
 @Entity
 public class Alert extends BaseModel{
 
-    @ManyToOne
-    private User user;
+    private long userId;
 
-    @ManyToOne
+    @ManyToOne ()
     private Stock stock;
     private double treshHoldValue;
 
-    public User getUser() {
-        return user;
+    @Enumerated(EnumType.STRING)
+    private AlertType alertType;
+
+    @Enumerated(EnumType.STRING)
+    private AlertStatus alertStatus;
+
+    public AlertStatus getAlertStatus() {
+        return alertStatus;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAlertStatus(AlertStatus alertStatus) {
+        this.alertStatus = alertStatus;
+    }
+
+    public AlertType getAlertType() {
+        return alertType;
+    }
+
+    public void setAlertType(AlertType alertType) {
+        this.alertType = alertType;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public Stock getStock() {
@@ -39,5 +58,15 @@ public class Alert extends BaseModel{
 
     public void setTreshHoldValue(double treshHoldValue) {
         this.treshHoldValue = treshHoldValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "alertType=" + alertType +
+                ", alertStatus=" + alertStatus +
+                ", treshHoldValue=" + treshHoldValue +
+                ", stock=" + stock +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package Dtos.watchListDto;
+package backend.stockstracker.Dtos.watchListDto;
 
 public enum WatchListResponseStatus {
     SUCCESS,

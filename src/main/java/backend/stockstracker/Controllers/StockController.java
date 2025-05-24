@@ -1,19 +1,15 @@
-package Controllers;
+package backend.stockstracker.Controllers;
 
-import Dtos.stockDto.StockResponseDto;
-import Dtos.stockDto.StockRequestDto;
-import Dtos.stockDto.StockResponseStatus;
-import Dtos.watchListDto.AddToWatchListRequestDto;
-import Dtos.watchListDto.WatchListRequestDto;
-import Dtos.watchListDto.WatchListResponseDto;
-import Dtos.watchListDto.WatchListResponseStatus;
-import Models.Stock;
-import Models.WatchList;
-import org.springframework.stereotype.Controller;
+import backend.stockstracker.Dtos.stockDto.StockResponseDto;
+import backend.stockstracker.Dtos.stockDto.StockResponseStatus;
+import backend.stockstracker.Dtos.watchListDto.AddToWatchListRequestDto;
+import backend.stockstracker.Dtos.watchListDto.WatchListRequestDto;
+import backend.stockstracker.Dtos.watchListDto.WatchListResponseDto;
+import backend.stockstracker.Dtos.watchListDto.WatchListResponseStatus;
+import backend.stockstracker.Models.Stock;
+import backend.stockstracker.Models.WatchList;
 import org.springframework.web.bind.annotation.*;
-import stockService.StockService;
-
-import java.util.List;
+import backend.stockstracker.service.stockService.StockService;
 
 @RestController
 @RequestMapping("/api")
@@ -25,34 +21,44 @@ public class StockController {
         this.stockService = stockService;
     }
 
+    //============ get stock from database by symbol ================================
     @GetMapping(value = "/stock")
-    public StockResponseDto getStock(@RequestParam("symbol") String symbol) {
+    public Stock getStock(@RequestParam("symbol") String symbol) {
 
-        StockResponseDto responseDto = new StockResponseDto();
+        //StockResponseDto responseDto = new StockResponseDto();
         Stock stcok = stockService.getStockBySymbol(symbol);
-        responseDto.setStock(stcok);
-        responseDto.setStatus(StockResponseStatus.SUCCESS);
-        return responseDto;
+        if(stcok == null) {
+            return  null;
+        }
+        //responseDto.setStock(stcok);
+        //responseDto.setStatus(StockResponseStatus.SUCCESS);
+        return stcok;
     }
+    //=============================================================================
 
-    @GetMapping(value = "watchList")
-    public WatchListResponseDto getWatchList(WatchListRequestDto watchListRequestDto){
-        return null;
-    }
 
-    @PostMapping(value = "watchList")
-    public WatchListResponseDto createWatchList(WatchListRequestDto watchListRequestDto){
-        return null;
-    }
+    //======================== add stock to the database ==========================
 
-    @PostMapping(value = "addToWatchList")
-    public WatchListResponseDto addToWatchList(AddToWatchListRequestDto addToWatchListRequestDto){
 
-        WatchListResponseDto responseDto = new WatchListResponseDto();
-        WatchList watchList = stockService.addStockToWatchList(addToWatchListRequestDto.getStock());
-        //responseDto.setWatchList(stocks);
-        responseDto.setStatus(WatchListResponseStatus.SUCCESS);
 
-        return responseDto;
-    }
+//    @GetMapping(value = "watchList")
+//    public WatchListResponseDto getWatchList(WatchListRequestDto watchListRequestDto){
+//        return null;
+//    }
+//
+//    @PostMapping(value = "watchList")
+//    public WatchListResponseDto createWatchList(WatchListRequestDto watchListRequestDto){
+//        return null;
+//    }
+//
+//    @PostMapping(value = "addToWatchList")
+//    public WatchListResponseDto addToWatchList(AddToWatchListRequestDto addToWatchListRequestDto){
+//
+//        WatchListResponseDto responseDto = new WatchListResponseDto();
+//        WatchList watchList = stockService.addStockToWatchList(addToWatchListRequestDto.getStock());
+//        //responseDto.setWatchList(stocks);
+//        responseDto.setStatus(WatchListResponseStatus.SUCCESS);
+//
+//        return responseDto;
+//    }
 }

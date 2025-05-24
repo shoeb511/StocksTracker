@@ -1,7 +1,6 @@
-package Models;
+package backend.stockstracker.Models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
@@ -18,6 +17,8 @@ public class Stock extends BaseModel{
 
     @OneToMany (mappedBy = "stock")
     private List<StckWatchList> watchLists;
+
+
 
     public String getSymbol() {
         return symbol;

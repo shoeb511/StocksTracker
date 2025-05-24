@@ -1,12 +1,10 @@
-package Models;
+package backend.stockstracker.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties;
 
 import java.util.List;
-import java.util.Map;
 
 @Entity
 public class WatchList extends BaseModel {
@@ -14,10 +12,16 @@ public class WatchList extends BaseModel {
     private String name;
     private String description;
 
-    @ManyToOne
-    private User user;
+    private long userId;
 
     @OneToMany(mappedBy = "watchList")
     private List<StckWatchList> stckWatchList;
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

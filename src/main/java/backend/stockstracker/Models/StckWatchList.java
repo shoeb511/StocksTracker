@@ -1,8 +1,7 @@
-package Models;
+package backend.stockstracker.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class StckWatchList extends BaseModel {

@@ -1,4 +1,4 @@
-package Dtos.stockDto;
+package backend.stockstracker.Dtos.stockDto;
 
 public class StockRequestDto {
 

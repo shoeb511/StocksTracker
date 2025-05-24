@@ -1,4 +1,4 @@
-package Configurations;
+package backend.stockstracker.Configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

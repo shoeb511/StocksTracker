@@ -1,6 +1,6 @@
-package Dtos.stockDto;
+package backend.stockstracker.Dtos.stockDto;
 
-import Models.Stock;
+import backend.stockstracker.Models.Stock;
 
 public class StockResponseDto {
 

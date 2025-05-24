@@ -1,6 +1,6 @@
-package Dtos.watchListDto;
+package backend.stockstracker.Dtos.watchListDto;
 
-import Models.Stock;
+import backend.stockstracker.Models.Stock;
 
 import java.util.List;
 
