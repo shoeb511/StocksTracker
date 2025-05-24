@@ -3,6 +3,7 @@ package backend.stockstracker.service.alertService;
 
 import backend.stockstracker.ArertStrategy.AlertStrategy;
 import backend.stockstracker.ArertStrategy.DownAlertStrategy;
+import backend.stockstracker.Exceptions.stockExceptions.AlertNotFoundException;
 import backend.stockstracker.Models.Alert;
 import backend.stockstracker.Models.AlertStatus;
 import backend.stockstracker.Models.AlertType;
@@ -158,11 +159,11 @@ public class AlertService {
         alertRepository.deleteById(id);
     }
 
-    public List<Alert> getAllAlerts(long userId) {
+    public List<Alert> getAllAlerts(long userId) throws AlertNotFoundException {
         List<Alert> alerts = alertRepository.findAllByUserId(userId);
         if(alerts.isEmpty()){
             System.out.println("Alert list is empty");
-            return null;
+            throw new AlertNotFoundException("No alert associated with with whis user id "+ userId);
         }
         return alerts;
     }

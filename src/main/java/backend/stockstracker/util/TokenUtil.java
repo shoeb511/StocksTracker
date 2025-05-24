@@ -1,5 +1,7 @@
 package backend.stockstracker.util;
 
+import backend.stockstracker.Exceptions.authExceptions.SessionTimeOutException;
+import backend.stockstracker.Exceptions.authExceptions.UnauthorizedUserException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.JwtParserBuilder;
@@ -16,7 +18,7 @@ public class TokenUtil {
     @Autowired
     SecretKey secretKey;
 
-    public boolean validateToken(String token, long userId, String email) {
+    public boolean validateToken(String token, long userId, String email) throws UnauthorizedUserException, SessionTimeOutException {
 
         JwtParser parser = Jwts.parser().verifyWith(secretKey).build();
 
@@ -28,17 +30,17 @@ public class TokenUtil {
 
         if(userId != userIdFromClaims){
             System.out.println("Invalid user id..........");
-            return false;
+            throw new UnauthorizedUserException("unauthorized access ...");
         }
 
         if (!userEmail.equals(email)) {
             System.out.println("Invalid user email..........");
-            return false;
+            throw new UnauthorizedUserException("unauthorized access ...");
         }
 
         if (expiry < System.currentTimeMillis()){
             System.out.println("Expired user session..........");
-            return false;
+            throw new SessionTimeOutException("session has expired, go and login again ...");
         }
 
         System.out.println("token has been validated..........");

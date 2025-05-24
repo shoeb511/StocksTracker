@@ -1,4 +1,4 @@
-package backend.stockstracker.Exceptions;
+package backend.stockstracker.Exceptions.authExceptions;
 
 public class SessionTimeOutException extends Exception{
 
